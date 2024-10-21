@@ -2,6 +2,7 @@
 # Members: Kyshauny Bailey, Kaciann Melbourne, Othneil Brown, Dwayne Wright, Khavar Facey
 
 import os
+import shlex
 import sys
 
 # Function to display the menu
@@ -26,18 +27,32 @@ def print_menu():
     ------------------------------
     """
     print(menu_text)
+
 def list_files():
     try:
         # Stores all the files in the current directory
         files = os.listdir(os.getcwd())
-        print("Files in current directory:")
-        for file in files:
-            print(f"- {file}")
+        if files:
+            print("Files in current directory:")
+            for file in files:
+                print(f"- {file}")
+        else:
+            print("No files found in the current directory.")
     except Exception as e:
         print(f"Error listing files: {e}")
 
 def modify_permission(permissions, file_name):
     try:
+        # Validate if the file exists
+        if not os.path.exists(file_name):
+            print(f"Error: The file '{file_name}' does not exist.")
+            return
+
+        # Validate if the permissions string is a valid octal number
+        if not permissions.isdigit() or len(permissions) > 4:
+            print(f"Error: '{permissions}' is not a valid octal permission.")
+            return
+
         # Convert the octal string representation of permissions to an integer
         os.chmod(file_name, int(permissions, 8))
         print(f"Permissions for '{file_name}' changed to '{permissions}'.")
@@ -52,10 +67,12 @@ def shell_loop():
         try:
             # Display the prompt, using the current directory as a prompt
             cwd = os.getcwd()
-            command_input = input(f"{cwd} > ")  # Show prompt and get user input
 
-            # Split input into the command and its arguments
-            command_args = command_input.split()
+            # Show prompt and get user input
+            command_input = input(f"{cwd}> ")
+
+            # Use shlex.split to properly handle quoted arguments
+            command_args = shlex.split(command_input)
 
             # If no command was given (empty input), continue the loop
             if len(command_args) == 0:
