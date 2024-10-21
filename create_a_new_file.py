@@ -3,7 +3,6 @@ import os
 print("Please select an option below\n\n  1. Create New File\n\n  2. Append Existing File")
 sel = int(input("\nPlease enter selection here: "))
 
-
 if sel == 1:
     print("\nFile Creation")
     # Get the file name from the user
