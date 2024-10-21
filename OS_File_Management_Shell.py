@@ -1,9 +1,9 @@
 # Operating System Custom Shell
 # Members: Kyshauny Bailey, Kaciann Melbourne, Othneil Brown, Dwayne Wright, Khavar Facey
-Test
+
 import os
 import sys
-nm
+
 # Function to display the menu
 def print_menu():
     menu_text = """
