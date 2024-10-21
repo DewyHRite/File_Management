@@ -17,7 +17,7 @@ if sel == 1:
         file = open(file_name, "r")
         print(file.read())
 elif sel == 2:
-    print("\nEdit File")
+    print("\nEdit/Append File")
     # Get the file name from the user
     file_name = input("Enter File Name Here : ")
     file_content: str = input("Please enter file contents here: ")
