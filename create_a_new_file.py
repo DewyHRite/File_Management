@@ -10,8 +10,7 @@ def createfile():
         # Get the file name from the user
         file_name = input("Enter File Name (with file extenstion) Here : ")
         file_content: str = input("Please enter file contents here: ")
-        print ("\nDo you wish to create file: ",file_name,'?')
-        sel_YN = str(input("\nPlease enter selection here [y/n]: "))
+        sel_YN = input(f"\nDo you wish to create file: {file_name}? \nPlease enter selection here [y/n]: ")
         if sel_YN in ['y','Y']:
             print("\nFile ",file_name,'was created successfully' )
             with open(file_name, 'w') as file:
