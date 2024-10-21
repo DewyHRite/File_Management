@@ -3,8 +3,7 @@
 Test
 import os
 import sys
-
-cf
+nm
 # Function to display the menu
 def print_menu():
     menu_text = """
