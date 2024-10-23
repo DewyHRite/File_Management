@@ -1,13 +1,5 @@
 import os
 
-file_name = "file.txt"
-
-# Create the file
-with open(file_name, 'w') as file:
-    file.write("")  # Creates an empty file
-
-print ("Name of file: ", file_name)
-
 # Rename a file
 new_name = input ("\nEnter new name for the file along with extension: ")
 
