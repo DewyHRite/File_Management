@@ -19,7 +19,7 @@ def print_menu():
     5. remove <dir_name>                  - Remove a directory
     6. change <dir_name>                  - Change working directory
     7. modify <permissions> <file_name>   - Modify file permissions
-    8. list                               - List files in the current directory
+    8. list [-l]                          - List files in the current directory (use -l for detailed view)
     9. help                               - Show this menu again
     10. exit                              - Exit the shell
 
@@ -27,37 +27,6 @@ def print_menu():
     ------------------------------
     """
     print(menu_text)
-
-def list_files():
-    try:
-        # Stores all the files in the current directory
-        files = os.listdir(os.getcwd())
-        if files:
-            print("Files in current directory:")
-            for file in files:
-                print(f"- {file}")
-        else:
-            print("No files found in the current directory.")
-    except Exception as e:
-        print(f"Error listing files: {e}")
-
-def modify_permission(permissions, file_name):
-    try:
-        # Validate if the file exists
-        if not os.path.exists(file_name):
-            print(f"Error: The file '{file_name}' does not exist.")
-            return
-
-        # Validate if the permissions string is a valid octal number
-        if not permissions.isdigit() or len(permissions) > 4:
-            print(f"Error: '{permissions}' is not a valid octal permission.")
-            return
-
-        # Convert the octal string representation of permissions to an integer
-        os.chmod(file_name, int(permissions, 8))
-        print(f"Permissions for '{file_name}' changed to '{permissions}'.")
-    except Exception as e:
-        print(f"Error modifying permissions: {e}")
 
 # Main loop for the shell
 def shell_loop():
@@ -106,7 +75,10 @@ def shell_loop():
                 modify_permission(command_args[1], command_args[2])
 
             elif command == "list":
-                list_files()
+                if (len(command_args) > 1):
+                    list_files(command_args[1])
+                else:
+                    list_files()
 
             elif command == "help":
                 print_menu()  # Show the menu again when the "help" command is used
