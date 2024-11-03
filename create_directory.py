@@ -7,6 +7,7 @@ try:
   # Creating the directory directing in the OS
     os.mkdir(dir_name)
     print(f"Directory: '{dir_name}' created.")
+  
 except DirExistsError:
     print(f"Directory: '{dir_name}' already exists.")
 except Exception as e:
