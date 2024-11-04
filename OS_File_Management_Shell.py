@@ -18,6 +18,10 @@ def execute_command(command_args):
     output, _ = prev_process.communicate()
     print(output.decode())
 
+def create_file(file_name, file_content):
+    with open(file_name, 'w') as file:
+        file.write(file_content)
+
 # Function to display the menu
 def print_menu():
     menu_text = """
