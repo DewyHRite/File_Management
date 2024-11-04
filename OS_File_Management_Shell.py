@@ -39,6 +39,7 @@ def delete_file():
     print()
     sel1_YN = str(input("Do you wish to remove? [y/n]"))
     os.remove(file_name)
+    print(f"\nFile {file_name} was deleted successfully")
   else:
     print("The file does not exist")
 
