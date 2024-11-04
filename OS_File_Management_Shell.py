@@ -4,6 +4,8 @@
 import os
 import shlex
 import sys
+import stat
+import time
 
 #Create File
 def display_prompt():
@@ -42,6 +44,78 @@ def delete_file():
     print(f"\nFile {file_name} was deleted successfully")
   else:
     print("The file does not exist")
+
+#Modify File Permissions
+def modify_permission(permissions, file_name):
+    try:
+        # Validate if the file exists
+        if not os.path.exists(file_name):
+            print(f"Error: The file '{file_name}' does not exist.")
+            return
+
+        # Validate if the permissions string is a valid octal number
+        if not permissions.isdigit() or len(permissions) > 4:
+            print(f"Error: '{permissions}' is not a valid octal permission.")
+            return
+
+        # Convert the octal string representation of permissions to an integer
+        os.chmod(file_name, int(permissions, 8))
+        print(f"Permissions for '{file_name}' changed to '{permissions}'.")
+    except Exception as e:
+        print(f"Error modifying permissions: {e}")
+
+#List files and detailed file attributes
+def list_files(arg=None):
+    # Get the current directory
+    current_dir = os.getcwd()
+
+    # List all files and directories in the current directory
+    entries = os.listdir(current_dir)
+
+    # Check if the directory is empty
+    if not entries:
+        print("No files found in the current directory.")
+        return
+
+    # Sort entries alphabetically
+    entries.sort()
+
+    if arg is None:
+        # List all entries (files and directories)
+        for entry in entries:
+            print(entry)
+    elif arg == "-l":
+        # List attributes of both files and directories
+        for entry in entries:
+            entry_path = os.path.join(current_dir, entry)
+            try:
+                entry_stat = os.stat(entry_path)
+
+                # File permissions
+                entry_permissions = stat.filemode(entry_stat.st_mode)
+
+                # Number of links
+                entry_links = entry_stat.st_nlink
+
+                # File owner (user ID)
+                entry_owner = entry_stat.st_uid
+
+                # File group (group ID)
+                entry_group = entry_stat.st_gid
+
+                # File size
+                entry_size = entry_stat.st_size
+
+                # Last modified time
+                entry_mtime = time.strftime("%b %d %H:%M", time.localtime(entry_stat.st_mtime))
+
+                # Format output
+                print(f"{entry_permissions} {entry_links} {entry_owner} {entry_group} {entry_size} {entry_mtime} {entry}")
+            except Exception as e:
+                print(f"Error retrieving stats for {entry}: {e}")
+    else:
+        # Error message for invalid arguments
+        print("Error: Invalid argument. Please use 'ls -l' for detailed file attributes.")
 
 # Function to display the menu
 def print_menu():
@@ -114,7 +188,7 @@ def shell_loop():
                 modify_permission(command_args[1], command_args[2])
 
             elif command == "list":
-                if (len(command_args) > 1):
+                if len(command_args) > 1:
                     list_files(command_args[1])
                 else:
                     list_files()
