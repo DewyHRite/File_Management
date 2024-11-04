@@ -8,18 +8,23 @@ import stat
 import time
 import subprocess
 
-#Create File
+
+# Create File
 def display_prompt():
     # Display prompt and get user input
     return input(f"{os.getcwd()}> ")
+
+
 def execute_command(command_args):
     cmds = [shlex.split(cmd) for cmd in command_args.split('|')] if '|' in command_args else [shlex.split(command_args)]
     prev_process = None
 
     for cmd in cmds:
-        prev_process = subprocess.Popen(cmd, stdin=prev_process.stdout if prev_process else None, stdout=subprocess.PIPE)
+        prev_process = subprocess.Popen(cmd, stdin=prev_process.stdout if prev_process else None,
+                                        stdout=subprocess.PIPE)
     output, _ = prev_process.communicate()
     print(output.decode())
+
 
 def create_file():
     # Get file name and content from user input
@@ -34,19 +39,21 @@ def create_file():
         with open(file_name, "r") as file:
             print
 
-#Delete File
-def delete_file():
-  file_name = input("Enter file name here : ")
-  if os.path.exists(file_name):
-    print(file_name, "was found!")
-    print()
-    sel1_YN = str(input("Do you wish to remove? [y/n]"))
-    os.remove(file_name)
-    print(f"\nFile {file_name} was deleted successfully")
-  else:
-    print("The file does not exist")
 
-#Modify File Permissions
+# Delete File
+def delete_file():
+    file_name = input("Enter file name here : ")
+    if os.path.exists(file_name):
+        print(file_name, "was found!")
+        print()
+        sel1_YN = str(input("Do you wish to remove? [y/n]"))
+        os.remove(file_name)
+        print(f"\nFile {file_name} was deleted successfully")
+    else:
+        print("The file does not exist")
+
+
+# Modify File Permissions
 def modify_permission(permissions, file_name):
     try:
         # Validate if the file exists
@@ -65,7 +72,8 @@ def modify_permission(permissions, file_name):
     except Exception as e:
         print(f"Error modifying permissions: {e}")
 
-#List files and detailed file attributes
+
+# List files and detailed file attributes
 def list_files(arg=None):
     # Get the current directory
     current_dir = os.getcwd()
@@ -111,17 +119,51 @@ def list_files(arg=None):
                 entry_mtime = time.strftime("%b %d %H:%M", time.localtime(entry_stat.st_mtime))
 
                 # Format output
-                print(f"{entry_permissions} {entry_links} {entry_owner} {entry_group} {entry_size} {entry_mtime} {entry}")
+                print(
+                    f"{entry_permissions} {entry_links} {entry_owner} {entry_group} {entry_size} {entry_mtime} {entry}")
             except Exception as e:
                 print(f"Error retrieving stats for {entry}: {e}")
     else:
         # Error message for invalid arguments
         print("Error: Invalid argument. Please use 'ls -l' for detailed file attributes.")
 
+
+# Function to remove a specified directory
+def remove_directory(dir_name):
+    try:
+        # Attempting to remove the directory specified by 'dir_name'
+        os.rmdir(dir_name)
+        # If successful, print a confirmation message
+        print(f"Directory '{dir_name}' removed.")
+    except FileNotFoundError:
+        # If the directory doesn't exist, print an error message
+        print(f"Error: The directory '{dir_name}' does not exist.")
+    except OSError:
+        # If the directory is not empty, print an error message
+        print(f"Error: The directory '{dir_name}' is not empty")
+    except Exception as e:
+        # If any other exception occurs, print the exception details
+        print(f"Error: {e}")
+
+# Function to change the current working directory to 'dir_name'
+def change_directory(dir_name):
+    try:
+        # Attempting to change the current working directory to 'dir_name'
+        os.chdir(dir_name)
+        # If successful, print a confirmation message
+        print(f"Changed directory to '{dir_name}'.")
+    except FileNotFoundError:
+        # If the directory doesn't exist, print an error message
+        print(f"Error: The directory '{dir_name}' does not exist.")
+    except Exception as e:
+        # If any other exception occurs, print the exception details
+        print(f"Error: {e}")
+
 # Set Environment Variable
 def set_env_variable(var_name, value):
     os.environ[var_name] = value
     print(f"Environment variable '{var_name}' set to '{value}'.")
+
 
 # Get Environment Variable
 def get_env_variable(var_name):
@@ -131,10 +173,12 @@ def get_env_variable(var_name):
     else:
         print(f"Environment variable '{var_name}' does not exist.")
 
+
 # List All Environment Variables
 def list_env_variables():
     for var_name, value in os.environ.items():
         print(f"{var_name}={value}")
+
 
 # Function to display the menu
 def print_menu():
@@ -164,7 +208,7 @@ def print_menu():
 
 # Main loop for the shell
 def shell_loop():
-    #print_menu()  # Show the menu at the beginning of the shell
+    # print_menu()  # Show the menu at the beginning of the shell
 
     while True:
         try:
@@ -195,16 +239,16 @@ def shell_loop():
 
             elif command == "rename":
                 # Promptinf for new file name
-                new_filename = input ("\nEnter new name for the file along with extension: ")
-                
+                new_filename = input("\nEnter new name for the file along with extension: ")
+
                 try:
                     # Renaming file directly in the OS
                     os.rename(file_name, new_file)
                     print(f"File renamed from {file_name} to {new_file}.")
-                
+
                     # Updating file_name variable to reflect new file name
                     file_name = new_filename
-                    
+
                 except FileNotFoundError:
                     print(f"The file {file_name} does not exist.")
                 except Exception as e:
@@ -212,18 +256,18 @@ def shell_loop():
 
             elif command == "make":
                 # Create a directory
-                dir_name = input ("\nEnter name of directory: ")
-                
+                dir_name = input("\nEnter name of directory: ")
+
                 try:
-                  # Creating the directory directly in the OS
+                    # Creating the directory directly in the OS
                     os.mkdir(dir_name)
                     print(f"Directory: '{dir_name}' created.")
-                  
+
                 except FileExistsError:
                     print(f"Directory: '{dir_name}' already exists.")
                 except Exception as e:
                     print(f"Error creating directory: {e}")
-                    
+
             elif command == "remove":
                 remove_directory(command_args[1])
 
