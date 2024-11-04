@@ -1,9 +1,22 @@
 # Operating System Custom Shell
 # Members: Kyshauny Bailey, Kaciann Melbourne, Othneil Brown, Dwayne Wright, Khavar Facey
-B
+
 import os
 import shlex
 import sys
+
+#Create File
+def display_prompt():
+    # Display prompt and get user input
+    return input(f"{os.getcwd()}> ")
+def execute_command(command_args):
+    cmds = [shlex.split(cmd) for cmd in command_args.split('|')] if '|' in command_args else [shlex.split(command_args)]
+    prev_process = None
+
+    for cmd in cmds:
+        prev_process = subprocess.Popen(cmd, stdin=prev_process.stdout if prev_process else None, stdout=subprocess.PIPE)
+    output, _ = prev_process.communicate()
+    print(output.decode())
 
 # Function to display the menu
 def print_menu():
@@ -27,10 +40,7 @@ def print_menu():
     ------------------------------
     """
     print(menu_text)
-#Create File
-def display_prompt():
-    # Display prompt and get user input
-    return input(f"{os.getcwd()}> ")
+
 
 # Main loop for the shell
 def shell_loop():
