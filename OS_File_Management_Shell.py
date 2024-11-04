@@ -6,6 +6,7 @@ import shlex
 import sys
 import stat
 import time
+import subprocess
 
 #Create File
 def display_prompt():
@@ -117,6 +118,24 @@ def list_files(arg=None):
         # Error message for invalid arguments
         print("Error: Invalid argument. Please use 'ls -l' for detailed file attributes.")
 
+# Set Environment Variable
+def set_env_variable(var_name, value):
+    os.environ[var_name] = value
+    print(f"Environment variable '{var_name}' set to '{value}'.")
+
+# Get Environment Variable
+def get_env_variable(var_name):
+    value = os.getenv(var_name)
+    if value is not None:
+        print(f"{var_name}={value}")
+    else:
+        print(f"Environment variable '{var_name}' does not exist.")
+
+# List All Environment Variables
+def list_env_variables():
+    for var_name, value in os.environ.items():
+        print(f"{var_name}={value}")
+
 # Function to display the menu
 def print_menu():
     menu_text = """
@@ -132,9 +151,11 @@ def print_menu():
     6. change <dir_name>                  - Change working directory
     7. modify <permissions> <file_name>   - Modify file permissions
     8. list [-l]                          - List files in the current directory (use -l for detailed view)
-    9. help                               - Show this menu again
-    10. exit                              - Exit the shell
-
+    9. set <var_name> <value>             - Set an environment variable
+    10. get <var_name>                    - Get an environment variable
+    11. env                               - List all environment variables
+    12. help                              - Show this menu again
+    13. exit                              - Exit the shell
     Please enter your command below:
     ------------------------------
     """
@@ -192,6 +213,20 @@ def shell_loop():
                     list_files(command_args[1])
                 else:
                     list_files()
+            elif command == "set":
+                if len(command_args) >= 3:
+                    set_env_variable(command_args[1], command_args[2])
+                else:
+                    print("Error: 'set' requires both a variable name and a value.")
+
+            elif command == "get":
+                if len(command_args) >= 2:
+                    get_env_variable(command_args[1])
+                else:
+                    print("Error: 'get' requires a variable name.")
+
+            elif command == "env":
+                list_env_variables()
 
             elif command == "help":
                 print_menu()  # Show the menu again when the "help" command is used
