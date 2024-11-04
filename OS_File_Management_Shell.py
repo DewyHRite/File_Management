@@ -31,6 +31,16 @@ def create_file():
         with open(file_name, "r") as file:
             print
 
+#Delete File
+def delete_file():
+  file_name = input("Enter file name here : ")
+  if os.path.exists(file_name):
+    print(file_name, "was found!")
+    print()
+    sel1_YN = str(input("Do you wish to remove? [y/n]"))
+    os.remove(file_name)
+  else:
+    print("The file does not exist")
 
 # Function to display the menu
 def print_menu():
@@ -85,7 +95,7 @@ def shell_loop():
                 create_file()
 
             elif command == "delete":
-                delete_file(command_args[1])
+                delete_file()
 
             elif command == "rename":
                 rename_file(command_args[1], command_args[2])
