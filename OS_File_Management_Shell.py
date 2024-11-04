@@ -41,12 +41,9 @@ def create_file():
 
 
 # Delete File
-def delete_file():
-    file_name = input("Enter file name here : ")
+def delete_file(file_name):
     if os.path.exists(file_name):
         print(file_name, "was found!")
-        print()
-        sel1_YN = str(input("Do you wish to remove? [y/n]"))
         os.remove(file_name)
         print(f"\nFile {file_name} was deleted successfully")
     else:
@@ -255,7 +252,7 @@ def shell_loop():
                 create_file()
 
             elif command == "delete":
-                delete_file()
+                delete_file(command_args[1])
 
             elif command == "rename":
                 rename_file(command_args[1], command_args[2])
