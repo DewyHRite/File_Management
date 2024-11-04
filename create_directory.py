@@ -4,7 +4,7 @@ import os
 dir_name = input ("\nEnter name of directory: ")
 
 try:
-  # Creating the directory directing in the OS
+  # Creating the directory directly in the OS
     os.mkdir(dir_name)
     print(f"Directory: '{dir_name}' created.")
   
