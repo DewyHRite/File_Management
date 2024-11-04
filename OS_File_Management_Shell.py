@@ -133,17 +133,16 @@ def list_files(arg=None):
                 entry_size = entry_stat.st_size
 
                 # Last modified time
-                entry_mtime = time.strftime("%b %d %H:%M", time.localtime(entry_stat.st_mtime))
+                entry_mtime = time.strftime("%Y-%m-%d %H:%M", time.localtime(entry_stat.st_mtime))
 
                 # Format output
                 print(
-                    f"{entry_permissions} {entry_links} {entry_owner} {entry_group} {entry_size} {entry_mtime} {entry}")
+                    f"{entry_permissions:<12} {entry_links:<3} {entry_owner:<3} {entry_group:<3} {entry_size:<7} {entry_mtime:<18} {entry}")
             except Exception as e:
                 print(f"Error retrieving stats for {entry}: {e}")
     else:
         # Error message for invalid arguments
-        print("Error: Invalid argument. Please use 'ls -l' for detailed file attributes.")
-
+        print("Error: Invalid argument. Please use 'list -l' for detailed file attributes.")
 
 # Function to remove a specified directory
 def remove_directory(dir_name):
