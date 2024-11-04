@@ -52,6 +52,16 @@ def delete_file():
     else:
         print("The file does not exist")
 
+def rename_file(old_name, new_name):
+    try:
+        # Renaming file directly in the OS
+        os.rename(old_name, new_name)
+        print(f"File renamed from {old_name} to {new_name}.")
+    except FileNotFoundError:
+        print(f"The file {old_name} does not exist.")
+    except Exception as e:
+        print(f"Error renaming file: {e}")
+
 def make_directory(dir_name):
     try:
         # Creating the directory directly in the OS
@@ -248,21 +258,7 @@ def shell_loop():
                 delete_file()
 
             elif command == "rename":
-                # Promptinf for new file name
-                new_filename = input("\nEnter new name for the file along with extension: ")
-
-                try:
-                    # Renaming file directly in the OS
-                    os.rename(file_name, new_file)
-                    print(f"File renamed from {file_name} to {new_file}.")
-
-                    # Updating file_name variable to reflect new file name
-                    file_name = new_filename
-
-                except FileNotFoundError:
-                    print(f"The file {file_name} does not exist.")
-                except Exception as e:
-                    print(f"Error renaming file: {e}")
+                rename_file(command_args[1], command_args[2])
 
             elif command == "make":
                 make_directory(command_args[1])
@@ -281,6 +277,7 @@ def shell_loop():
                     list_files(command_args[1])
                 else:
                     list_files()
+
             elif command == "set":
                 if len(command_args) >= 3:
                     set_env_variable(command_args[1], command_args[2])
