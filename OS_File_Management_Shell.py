@@ -194,11 +194,36 @@ def shell_loop():
                 delete_file()
 
             elif command == "rename":
-                rename_file(command_args[1], command_args[2])
+                # Promptinf for new file name
+                new_filename = input ("\nEnter new name for the file along with extension: ")
+                
+                try:
+                    # Renaming file directly in the OS
+                    os.rename(file_name, new_file)
+                    print(f"File renamed from {file_name} to {new_file}.")
+                
+                    # Updating file_name variable to reflect new file name
+                    file_name = new_filename
+                    
+                except FileNotFoundError:
+                    print(f"The file {file_name} does not exist.")
+                except Exception as e:
+                    print(f"Error renaming file: {e}")
 
             elif command == "make":
-                create_directory(command_args[1])
-
+                # Create a directory
+                dir_name = input ("\nEnter name of directory: ")
+                
+                try:
+                  # Creating the directory directly in the OS
+                    os.mkdir(dir_name)
+                    print(f"Directory: '{dir_name}' created.")
+                  
+                except FileExistsError:
+                    print(f"Directory: '{dir_name}' already exists.")
+                except Exception as e:
+                    print(f"Error creating directory: {e}")
+                    
             elif command == "remove":
                 remove_directory(command_args[1])
 
