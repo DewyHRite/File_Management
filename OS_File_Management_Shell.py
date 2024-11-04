@@ -18,9 +18,19 @@ def execute_command(command_args):
     output, _ = prev_process.communicate()
     print(output.decode())
 
-def create_file(file_name, file_content):
-    with open(file_name, 'w') as file:
-        file.write(file_content)
+def create_file():
+    # Get file name and content from user input
+    file_name = input("Enter File Name (with file extension) Here: ")
+    file_content = input("Please enter file contents here: ")
+    if input(f"\nDo you wish to create file: {file_name}? (y/n): ").lower() == 'y':
+        # Create the file and write content to it
+        with open(file_name, 'w') as file:
+            file.write(file_content)
+        print(f"\nFile {file_name} was created successfully")
+        # Display the contents of the created file
+        with open(file_name, "r") as file:
+            print
+
 
 # Function to display the menu
 def print_menu():
@@ -62,7 +72,7 @@ def shell_loop():
             command_args = shlex.split(command_input)
 
             # If no command was given (empty input), continue the loop
-            if len(command_args) == 0:
+            if len(command_args) < 0:
                 continue
 
             # Command dispatcher
@@ -72,7 +82,7 @@ def shell_loop():
                 sys.exit(0)  # Exit the shell
 
             elif command == "create":
-                create_file(command_args[1])
+                create_file()
 
             elif command == "delete":
                 delete_file(command_args[1])
