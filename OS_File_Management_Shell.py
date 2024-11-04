@@ -52,6 +52,16 @@ def delete_file():
     else:
         print("The file does not exist")
 
+def make_directory(dir_name):
+    try:
+        # Creating the directory directly in the OS
+        os.mkdir(dir_name)
+        print(f"Directory: '{dir_name}' created.")
+
+    except FileExistsError:
+        print(f"Directory: '{dir_name}' already exists.")
+    except Exception as e:
+        print(f"Error creating directory: {e}")
 
 # Modify File Permissions
 def modify_permission(permissions, file_name):
@@ -255,18 +265,7 @@ def shell_loop():
                     print(f"Error renaming file: {e}")
 
             elif command == "make":
-                # Create a directory
-                dir_name = input("\nEnter name of directory: ")
-
-                try:
-                    # Creating the directory directly in the OS
-                    os.mkdir(dir_name)
-                    print(f"Directory: '{dir_name}' created.")
-
-                except FileExistsError:
-                    print(f"Directory: '{dir_name}' already exists.")
-                except Exception as e:
-                    print(f"Error creating directory: {e}")
+                make_directory(command_args[1])
 
             elif command == "remove":
                 remove_directory(command_args[1])
