@@ -27,6 +27,10 @@ def print_menu():
     ------------------------------
     """
     print(menu_text)
+#Create File
+def display_prompt():
+    # Display prompt and get user input
+    return input(f"{os.getcwd()}> ")
 
 # Main loop for the shell
 def shell_loop():
